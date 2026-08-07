@@ -3,8 +3,12 @@
 ## Copyright (C) 2024 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 ## See the file COPYING for copying conditions.
 
-set -x
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o errtrace
+shopt -s inherit_errexit
+shopt -s shift_verbose
 
 if ! test -r /var/lib/repository-dist/derivative_apt_repository_opts ; then
   exit 0
@@ -14,8 +18,11 @@ if test -e /var/lib/repository-dist/initializer.done ; then
   exit 0
 fi
 
-repository_dist_arguments=$(cat /var/lib/repository-dist/derivative_apt_repository_opts)
+repository_dist_arguments="$(cat -- /var/lib/repository-dist/derivative_apt_repository_opts)"
 
+## Deliberate word splitting: the file holds an option STRING, and the whole
+## point is that it reaches repository-dist as separate arguments.
+# shellcheck disable=SC2086
 repository-dist ${repository_dist_arguments}
 
-touch /var/lib/repository-dist/initializer.done
+touch -- /var/lib/repository-dist/initializer.done
