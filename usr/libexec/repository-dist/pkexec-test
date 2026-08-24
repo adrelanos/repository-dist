@@ -1,3 +1,16 @@
 #!/bin/bash
 
+## Copyright (C) 2024 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
+## See the file COPYING for copying conditions.
+
+## Does nothing on purpose: pkexec is pointed at this to check that a policykit
+## authorisation prompt appears and succeeds, without running anything.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o errtrace
+shopt -s inherit_errexit
+shopt -s shift_verbose
+
 exit 0
